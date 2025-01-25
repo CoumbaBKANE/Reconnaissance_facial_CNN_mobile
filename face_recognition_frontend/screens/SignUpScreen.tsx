@@ -3,34 +3,32 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 export default function SignUpScreen({ navigation }) {
-    const [prenom, setPrenom] = useState('');
-    const [nom, setNom] = useState('');
+    const [name, setName] = useState('');
     const [image, setImage] = useState(null);
     const [error, setError] = useState('');
 
     const onSignUp = async () => {
-        if (!prenom || !nom || !image) {
+        if (!name || !image) {
             setError("Tous les champs sont requis !");
             return;
         }
-    
+
         const formData = new FormData();
-        formData.append('nom', nom);
-        formData.append('prenom', prenom);
-    
+        formData.append('name', name);
+
         try {
             const response = await fetch(image);
             const blob = await response.blob();
             const file = new File([blob], 'profile_picture.jpg', { type: blob.type || 'image/jpeg' });
             formData.append('image', file);
-    
-            const res = await fetch('http://localhost:5000/signup', {
+
+            const res = await fetch('http://localhost:5000/learn', {
                 method: 'POST',
                 body: formData,  // Ne pas utiliser JSON.stringify ici
             });
-    
+
             const data = await res.json();
-            if (res.status === 201) {
+            if (res.status === 200) {
                 alert('Inscription réussie');
                 navigation.navigate('Welcome');
             } else {
@@ -40,8 +38,8 @@ export default function SignUpScreen({ navigation }) {
             setError("Erreur lors de l'inscription");
         }
     };
-    
-    
+
+
     const uploadImage = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!permissionResult.granted) {
@@ -64,26 +62,19 @@ export default function SignUpScreen({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder='Prenom'
-                value={prenom}
-                onChangeText={setPrenom}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder='Nom'
-                value={nom}
-                onChangeText={setNom}
-    
+                value={name}
+                onChangeText={setName}
             />
             <View style={styles.buttonContainer}>
                 <Button title="Choisir une photo" onPress={uploadImage} />
             </View>
-    
+
             {image && <Image source={{ uri: image }} style={styles.image} />}
-    
+
             <Button title="S'inscrire" onPress={onSignUp} />
             {error ? <Text style={styles.error}>{error}</Text> : null}
         </View>
-    
+
     );
 };
 
