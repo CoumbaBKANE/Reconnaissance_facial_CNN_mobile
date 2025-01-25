@@ -2,13 +2,13 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Dimensions, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { EndPoints } from '../constantes';
+import {recognize} from "../useSendFile";
 
-export default function () {
+export default function ({ navigation }) {
     const [facing, setFacing] = useState<CameraType>('front');
     const [permission, requestPermission] = useCameraPermissions();
     const camera = useRef(null);
     const screenWidth = Dimensions.get('window').width;
-
 
     const styles = StyleSheet.create({
         container: {
@@ -71,49 +71,10 @@ export default function () {
 
     function handlePictureTaken() {
         camera.current?.takePictureAsync().then((photo) => {
-            console.log(photo);
-            uploadImageAsBlob(photo.uri);
+            recognize(photo.uri);
+            navigation.navigate('Home')
         })
     }
-
-    const uriToBlob = async (uri) => {
-        try {
-            const response = await fetch(uri);
-            const blob = await response.blob();
-            return blob;
-        } catch (error) {
-            console.error('Erreur de conversion en Blob:', error);
-            throw error;
-        }
-    };
-
-    const uploadImageAsBlob = async (photoUri) => {
-        try {
-            const blob = await uriToBlob(photoUri);
-
-            const formData = new FormData();
-            formData.append('image', blob);
-            const response = await fetch(EndPoints.RECOGNIZE, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                body: formData,
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                console.log('Réponse de l’API:', result);
-                alert('Image envoyée avec succès!');
-            } else {
-                console.error('Erreur API:', result);
-                alert(`Erreur: ${result.error}`);
-            }
-        } catch (error) {
-            console.error('Erreur lors de l’envoi de l’image:', error);
-            alert('Erreur de connexion au serveur.');
-        }
-    };
 
     return (
         <View style={styles.container}>
