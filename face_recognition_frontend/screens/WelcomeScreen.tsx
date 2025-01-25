@@ -13,36 +13,57 @@ export default function WelcomeScreen({ navigation }) {
             fontSize: 24,
             marginBottom: 16,
         },
-        button: {
+        buttonPrimary: {
             margin: 8,
             padding: 10,
-            backgroundColor: 'blue',
-            borderRadius: 5,
+            width: 250,
+            height: 70,
+            backgroundColor: '#5b6fdc',
+            borderRadius: 45,
+            justifyContent: 'center',
+            alignItems: 'center',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
         },
-        buttonText: {
+        buttonTextPrimary: {
             color: '#fff',
+            fontSize: 20,
+        },
+        buttonSecondary: {
+            margin: 8,
+            padding: 10,
+            width: 250,
+            height: 70,
+            backgroundColor: '#fff',
+            borderRadius: 45,
+            justifyContent: 'center',
+            alignItems: 'center',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        },
+        buttonTextSecondary: {
+            color: '#5B6FDCFF',
+            fontSize: 20,
         },
     });
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Bienvenue cher utilisateur</Text>
+            <Text style={styles.title}>Votre visage, votre clé.</Text>
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('LoginFaceNet')}
+                style={styles.buttonPrimary}
+                onPress={() => navigation.navigate('Connexion avec ResNet')}
             >
-                <Text style={styles.buttonText}>Login FaceNet</Text>
+                <Text style={styles.buttonTextPrimary}>Connexion avec ResNet</Text>
             </TouchableOpacity>
+            {/*<TouchableOpacity*/}
+            {/*    style={styles.button}*/}
+            {/*    onPress={() => navigation.navigate('LoginLBP')}*/}
+            {/*>*/}
+            {/*    <Text style={styles.buttonText}>Login LBP</Text>*/}
+            {/*</TouchableOpacity>*/}
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('LoginLBP')}
+                style={styles.buttonSecondary}
+                onPress={() => navigation.navigate('Inscription')}
             >
-                <Text style={styles.buttonText}>Login LBP</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('SignUp')}
-            >
-                <Text style={styles.buttonText}>Sign Up</Text>
+                <Text style={styles.buttonTextSecondary}>Inscription</Text>
             </TouchableOpacity>
         </View>
     );
