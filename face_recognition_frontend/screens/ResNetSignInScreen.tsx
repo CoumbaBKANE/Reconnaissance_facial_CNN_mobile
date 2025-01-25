@@ -1,6 +1,7 @@
-import { CameraView, CameraType, useCameraPermissions} from 'expo-camera';
-import {useRef, useState} from 'react';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useRef, useState } from 'react';
 import { Dimensions, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { EndPoints } from '../constantes';
 
 export default function () {
     const [facing, setFacing] = useState<CameraType>('front');
@@ -71,7 +72,7 @@ export default function () {
     function handlePictureTaken() {
         camera.current?.takePictureAsync().then((photo) => {
             console.log(photo);
-            // uploadImageAsBlob(photo.uri);
+            uploadImageAsBlob(photo.uri);
         })
     }
 
@@ -92,7 +93,7 @@ export default function () {
 
             const formData = new FormData();
             formData.append('image', blob);
-            const response = await fetch('http://<TON_SERVEUR>/learn', {
+            const response = await fetch(EndPoints.RECOGNIZE, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -117,7 +118,7 @@ export default function () {
     return (
         <View style={styles.container}>
             <View style={styles.cameraContainer}>
-                <CameraView ref={camera} style={styles.camera} facing={facing}/>
+                <CameraView ref={camera} style={styles.camera} facing={facing} />
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handlePictureTaken}>

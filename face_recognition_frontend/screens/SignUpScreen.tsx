@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import {EndPoints} from '../constantes';
 
 import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 export default function SignUpScreen({ navigation }) {
@@ -22,7 +23,7 @@ export default function SignUpScreen({ navigation }) {
             const file = new File([blob], 'profile_picture.jpg', { type: blob.type || 'image/jpeg' });
             formData.append('image', file);
 
-            const res = await fetch('http://localhost:5000/learn', {
+            const res = await fetch(EndPoints.LEARNING, {
                 method: 'POST',
                 body: formData,  // Ne pas utiliser JSON.stringify ici
             });
@@ -115,5 +116,3 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
 });
-
-

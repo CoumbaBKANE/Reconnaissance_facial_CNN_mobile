@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Image, Alert } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import axios from 'axios';
@@ -11,8 +12,6 @@ export default function LoginLBPScreen({ navigation }) {
     const [startCamera, setStartCamera] = useState(false);
     const [previewVisible, setPreviewVisible] = useState(false)
     const [capturedImage, setCapturedImage] = useState<any>(null);
-
-
 
     const __startCamera = async () => {
         const { status } = await Camera.requestCameraPermissionsAsync()
